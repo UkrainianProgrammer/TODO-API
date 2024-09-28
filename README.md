@@ -28,6 +28,7 @@ Develop an API that satisfies the following requirements:
 * Use a database to store the user and to-do list (PostgreSQL)
 * Implement proper data validation
 * Implement pagination and filtering for the to-do list
+* Deploy the API inside a Docker container
 
 # Endpoints and examples of how to consume the API
 
