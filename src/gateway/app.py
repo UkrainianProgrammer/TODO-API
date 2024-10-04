@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 
+from auth import access
+
 server = Flask(__name__)
 
 @server.route("/", methods=[""])
@@ -12,7 +14,12 @@ def register():
 
 @server.route("/login", methods=["POST"])
 def login():
-    pass
+    token, err = access.login(request)
+
+    if not err:
+        return token
+    else:
+        return err
 
 @server.route("/todos", methods=["POST"])
 def todos():
