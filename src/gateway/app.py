@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 
 from auth import access
 
@@ -20,6 +20,14 @@ def login():
         return token
     else:
         return err
+
+
+@server.route('/logout', methods=["DELETE"])
+def logout():
+    if request.method == "DELETE":
+        session['user_id'] = None
+        response = make_response('', 204)
+        return response
 
 @server.route("/todos", methods=["POST"])
 def todos():

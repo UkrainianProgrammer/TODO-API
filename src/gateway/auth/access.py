@@ -6,6 +6,7 @@ def login(request):
         return None, ("missing credentials", 401)
     
     basicAuth = (auth.username, auth.password)
+    # TODO: this should be replaced with a call to PostgreSQL setup and search for the password
     response = requests.post(f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/login",
                              basicAuth)
     
