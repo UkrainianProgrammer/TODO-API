@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, session
+from flask import Flask, request, jsonify, session, render_template, make_response
 
 from auth import access
 
@@ -8,7 +8,7 @@ server = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@server.route("/regiser", methods=["POST"])
+@server.route("/register", methods=["POST"])
 def register():
     pass
 
