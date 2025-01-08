@@ -1,4 +1,4 @@
-import os, requests
+import os, requests, datetime
 import psycopg2
 from dotenv import load_dotenv
 import jwt
@@ -9,6 +9,7 @@ dbUrl = os.environ.get("POSTGRES_URL")
 dbName = os.environ.get("POSTGRES_DB")
 dbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
 dbUsersTable = os.environ.get("POSTGRES_USER_TABLE")
+jwtSecret = os.environ.get("JWT_SECRET")
 connection = psycopg2.connect(database=dbName, host="localhost", port="5432", user="postgres", password=dbPassword)
 print("Successfully connected to database: " + dbName)
 
@@ -28,8 +29,19 @@ def login(request):
             return None, ("invalid credentials", 401)
         else:
             # TODO: create JWT token
-            pass
+            return createJWT(auth.username, jwtSecret, True)
             
 
 
-# TODO: create JWT encoder function
+def createJWT(username, secret, authz):
+    return jwt.encode(
+        {
+            "username": username,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc)
+                + datetime.timedelta(days=1),
+            "iat": datetime.datetime.now(tz=datetime.timezone.utc),
+            "admin": authz,
+        },
+        secret,
+        algorithm="HS256",
+    )
