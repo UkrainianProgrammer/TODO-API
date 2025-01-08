@@ -5,15 +5,15 @@ import jwt
 
 load_dotenv()
 
-dbUrl = os.environ.get("POSTGRES_URL")
-dbName = os.environ.get("POSTGRES_DB")
-dbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
+# dbUrl = os.environ.get("POSTGRES_URL")
+# dbName = os.environ.get("POSTGRES_DB")
+# dbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
 dbUsersTable = os.environ.get("POSTGRES_USER_TABLE")
 jwtSecret = os.environ.get("JWT_SECRET")
-connection = psycopg2.connect(database=dbName, host="localhost", port="5432", user="postgres", password=dbPassword)
-print("Successfully connected to database: " + dbName)
+# connection = psycopg2.connect(database=dbName, host="localhost", port="5432", user="postgres", password=dbPassword)
+# print("Successfully connected to database: " + dbName)
 
-def login(request):
+def login(request, connection):
     auth = request.authorization
     if not auth:
         return None, ("missing credentials", 401)

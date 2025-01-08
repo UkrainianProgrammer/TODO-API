@@ -1,10 +1,19 @@
 from flask import Flask, request, jsonify, session, render_template, make_response
+import psycopg2
 import os
 from dotenv import load_dotenv
 
 from auth import access
 
 load_dotenv()
+
+dbUrl = os.environ.get("POSTGRES_URL")
+dbName = os.environ.get("POSTGRES_DB")
+dbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
+dbUsersTable = os.environ.get("POSTGRES_USER_TABLE")
+jwtSecret = os.environ.get("JWT_SECRET")
+connection = psycopg2.connect(database=dbName, host="localhost", port="5432", user="postgres", password=dbPassword)
+print("Successfully connected to database: " + dbName)
 
 server = Flask(__name__)
 
@@ -18,7 +27,7 @@ def register():
 
 @server.route("/login", methods=["POST"])
 def login():
-    token, err = access.login(request)
+    token, err = access.login(request, connection)
 
     if not err:
         return token
