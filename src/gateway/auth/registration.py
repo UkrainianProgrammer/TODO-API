@@ -22,11 +22,11 @@ def register(request, connection):
     # hash the password
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    print(hashed_password)
+    print(type(hashed_password))
 
     # insert new user into the database
-    # with connection.cursor() as cursor:
-    #     cursor.execute(f"INSERT INTO {dbName}.users (email, password) VALUES (%s, %s)", (email, password))
-    #     connection.commit()
+    with connection.cursor() as cursor:
+        cursor.execute(f"INSERT INTO {dbUsersTable} (email, password) VALUES (%s, %s)", (email, hashed_password))
+        connection.commit()
 
     return jsonify({"message": "user created successfully"}), 201
