@@ -3,7 +3,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 
-from auth import access
+from auth import access, registration
 
 load_dotenv()
 
@@ -23,7 +23,13 @@ def index():
 
 @server.route("/register", methods=["POST"])
 def register():
-    pass
+    msg, status = registration.register(request, connection)
+    if status == 201:
+        print("successfully registered user")
+        return msg, status
+    else:
+        print(msg)
+        return msg, status
 
 @server.route("/login", methods=["POST"])
 def login():

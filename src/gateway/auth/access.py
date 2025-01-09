@@ -1,17 +1,11 @@
 import os, requests, datetime
-import psycopg2
 from dotenv import load_dotenv
 import jwt
 
 load_dotenv()
 
-# dbUrl = os.environ.get("POSTGRES_URL")
-# dbName = os.environ.get("POSTGRES_DB")
-# dbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
 dbUsersTable = os.environ.get("POSTGRES_USER_TABLE")
 jwtSecret = os.environ.get("JWT_SECRET")
-# connection = psycopg2.connect(database=dbName, host="localhost", port="5432", user="postgres", password=dbPassword)
-# print("Successfully connected to database: " + dbName)
 
 def login(request, connection):
     auth = request.authorization
@@ -28,7 +22,6 @@ def login(request, connection):
         if auth.username != email or auth.password != password:
             return None, ("invalid credentials", 401)
         else:
-            # TODO: create JWT token
             return createJWT(auth.username, jwtSecret, True)
             
 
