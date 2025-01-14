@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, session, render_template, make_response
 import psycopg2
+from flask_pymongo import PyMongo
 import os
 from dotenv import load_dotenv
 
@@ -34,7 +35,7 @@ def register():
 @server.route("/login", methods=["POST"])
 def login():
     token, err = access.login(request, connection)
-
+    print(token)
     if not err:
         return token
     else:
@@ -50,7 +51,8 @@ def logout():
 
 @server.route("/todos", methods=["POST"])
 def todos():
-    pass
+    # TODO: finish the request
+    err = todos.createItem(request)
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
