@@ -51,8 +51,11 @@ def logout():
 
 @server.route("/todos", methods=["POST"])
 def todos():
+    # TODO: verify client has authenticated
+    validUser = access.validateUser(request)
+
     # TODO: finish the request
-    err = todos.createItem(request)
+    msg = todos.createItem(request)
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
