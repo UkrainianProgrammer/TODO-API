@@ -23,8 +23,23 @@ def login(request, connection):
             return None, ("invalid credentials", 401)
         else:
             return createJWT(auth.username, jwtSecret, True)
-            
 
+def validateUser(request):
+    if not "Authorization" in request.headers:
+        return "missing credentials", 401
+
+    encodedToken = request.headers["Authorization"]
+    if not encodedToken:
+        return "invalid credentials", 401
+    
+    encodedToken = encodedToken.split(" ")[1]
+
+    try:
+        decoded = jwt.decode(encodedToken, jwtSecret, algorithms=["HS256"])
+    except:
+        return "not authorized", 403
+
+    return decoded, 200
 
 def createJWT(username, secret, authz):
     return jwt.encode(

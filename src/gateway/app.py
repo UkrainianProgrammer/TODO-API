@@ -52,10 +52,13 @@ def logout():
 @server.route("/todos", methods=["POST"])
 def todos():
     # TODO: verify client has authenticated
-    validUser = access.validateUser(request)
+    msg, status = access.validateUser(request)
+
+    if status != 200:
+        return msg
 
     # TODO: finish the request
-    msg = todos.createItem(request)
+    # item = todos.createItem(request)
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
