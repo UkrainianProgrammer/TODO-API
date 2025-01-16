@@ -53,6 +53,7 @@ def logout():
 def todos():
     # TODO: verify client has authenticated
     msg, status = access.validateUser(request)
+    print(msg)
 
     if status != 200:
         return msg
