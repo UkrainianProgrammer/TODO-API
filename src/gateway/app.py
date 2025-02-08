@@ -1,20 +1,28 @@
 from flask import Flask, request, jsonify, session, render_template, make_response
 import psycopg2
-from flask_pymongo import PyMongo
+from flask_pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 
 from auth import access, registration
+from todo import todos
 
 load_dotenv()
 
-dbUrl = os.environ.get("POSTGRES_URL")
-dbName = os.environ.get("POSTGRES_DB")
-dbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
-dbUsersTable = os.environ.get("POSTGRES_USER_TABLE")
+postgreDbUrl = os.environ.get("POSTGRES_URL")
+postgreDbName = os.environ.get("POSTGRES_DB")
+postgresDbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
+postgresDbUsersTable = os.environ.get("POSTGRES_USER_TABLE")
 jwtSecret = os.environ.get("JWT_SECRET")
-connection = psycopg2.connect(database=dbName, host="localhost", port="5432", user="postgres", password=dbPassword)
-print("Successfully connected to database: " + dbName)
+postgresConnection = psycopg2.connect(database=postgreDbName, host="localhost", port="5432", user="postgres", password=postgresDbPassword)
+print("Successfully connected to Postgres database: " + postgreDbName)
+
+# TODO
+# MONGO_URI = ""
+# MONGO_DB = ""
+# MONGO_COLLECTION = ""
+
+
 
 server = Flask(__name__)
 
@@ -24,7 +32,7 @@ def index():
 
 @server.route("/register", methods=["POST"])
 def register():
-    msg, status = registration.register(request, connection)
+    msg, status = registration.register(request, postgresConnection)
     if status == 201:
         print("successfully registered user")
         return msg, status
@@ -34,7 +42,7 @@ def register():
 
 @server.route("/login", methods=["POST"])
 def login():
-    token, err = access.login(request, connection)
+    token, err = access.login(request, postgresConnection)
     print(token)
     if not err:
         return token
@@ -51,7 +59,6 @@ def logout():
 
 @server.route("/todos", methods=["POST"])
 def todos():
-    # TODO: verify client has authenticated
     msg, status = access.validateUser(request)
     print(msg)
 
@@ -59,7 +66,7 @@ def todos():
         return msg
 
     # TODO: finish the request
-    # item = todos.createItem(request)
+    item = todos.createItem(request)
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
