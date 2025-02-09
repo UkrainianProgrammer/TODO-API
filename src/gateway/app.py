@@ -18,9 +18,12 @@ postgresConnection = psycopg2.connect(database=postgreDbName, host="localhost", 
 print("Successfully connected to Postgres database: " + postgreDbName)
 
 # TODO
-# MONGO_URI = ""
-# MONGO_DB = ""
+MONGO_URI = os.environ.get("MONGO_URI")
+MONGO_DB = os.environ.get("MONGO_DB")
 # MONGO_COLLECTION = ""
+
+mongoClient = MongoClient(MONGO_URI)
+mongoDb = mongoClient[MONGO_DB]
 
 
 
