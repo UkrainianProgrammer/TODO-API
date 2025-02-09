@@ -17,10 +17,9 @@ jwtSecret = os.environ.get("JWT_SECRET")
 postgresConnection = psycopg2.connect(database=postgreDbName, host="localhost", port="5432", user="postgres", password=postgresDbPassword)
 print("Successfully connected to Postgres database: " + postgreDbName)
 
-# TODO
 MONGO_URI = os.environ.get("MONGO_URI")
 MONGO_DB = os.environ.get("MONGO_DB")
-# MONGO_COLLECTION = ""
+MONGO_COLLECTION = os.environ.get("MONGO_DB_COLLECTION")
 
 mongoClient = MongoClient(MONGO_URI)
 mongoDb = mongoClient[MONGO_DB]
