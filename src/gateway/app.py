@@ -9,6 +9,7 @@ from todo import todos
 
 load_dotenv()
 
+# POSTGRES
 postgreDbUrl = os.environ.get("POSTGRES_URL")
 postgreDbName = os.environ.get("POSTGRES_DB")
 postgresDbPassword = os.environ.get("POSTGRES_DB_PASSWORD")
@@ -17,13 +18,14 @@ jwtSecret = os.environ.get("JWT_SECRET")
 postgresConnection = psycopg2.connect(database=postgreDbName, host="localhost", port="5432", user="postgres", password=postgresDbPassword)
 print("Successfully connected to Postgres database: " + postgreDbName)
 
+# MONGODB
 MONGO_URI = os.environ.get("MONGO_URI")
 MONGO_DB = os.environ.get("MONGO_DB")
 MONGO_COLLECTION = os.environ.get("MONGO_DB_COLLECTION")
 
 mongoClient = MongoClient(MONGO_URI)
 mongoDb = mongoClient[MONGO_DB]
-
+mongoCollection = mongoDb[MONGO_COLLECTION]
 
 
 server = Flask(__name__)
@@ -68,7 +70,7 @@ def todos():
         return msg
 
     # TODO: finish the request
-    item = todos.createItem(request)
+    item = todos.createItem(request, mongoCollection)
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
