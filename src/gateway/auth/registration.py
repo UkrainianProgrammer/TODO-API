@@ -1,5 +1,5 @@
 import os, requests, datetime
-from flask import jsonify, make_response
+import messages
 import bcrypt
 from dotenv import load_dotenv
 
@@ -17,7 +17,7 @@ def register(request, connection):
     with connection.cursor() as cursor:
         cursor.execute(f"SELECT email FROM {dbUsersTable} WHERE email=%s", (email,))
         if cursor.fetchone():
-            return jsonify({"error": "email already exists"}), 409
+            return messages.errorEmailExists, 409
 
     # hash the password
     salt = bcrypt.gensalt()
@@ -29,4 +29,4 @@ def register(request, connection):
         cursor.execute(f"INSERT INTO {dbUsersTable} (email, password) VALUES (%s, %s)", (email, hashed_password))
         connection.commit()
 
-    return jsonify({"message": "user created successfully"}), 201
+    return messages.userCreatedSuccess.format(email), 201

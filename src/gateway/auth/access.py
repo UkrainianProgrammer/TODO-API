@@ -1,6 +1,9 @@
 import os, requests, datetime
+from flask import jsonify
 from dotenv import load_dotenv
 import jwt
+
+import messages
 
 load_dotenv()
 
@@ -20,9 +23,9 @@ def login(request, connection):
         password = userRow[1]
 
         if auth.username != email or auth.password != password:
-            return None, ("invalid credentials", 401)
+            return messages.errorInvalidCredentials, 500
         else:
-            return createJWT(auth.username, jwtSecret, True)
+            return createJWT(auth.username, jwtSecret, True), 201
 
 def validateUser(request):
     if not "Authorization" in request.headers:

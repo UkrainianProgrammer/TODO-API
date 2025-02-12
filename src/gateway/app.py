@@ -26,6 +26,8 @@ MONGO_COLLECTION = os.environ.get("MONGO_DB_COLLECTION")
 mongoClient = MongoClient(MONGO_URI)
 mongoDb = mongoClient[MONGO_DB]
 mongoCollection = mongoDb[MONGO_COLLECTION]
+mongoDb.command("ping") # Check connection by sending a ping command
+print("Successfully connected to MongoDB database: " + MONGO_DB)
 
 
 server = Flask(__name__)
@@ -36,22 +38,17 @@ def index():
 
 @server.route("/register", methods=["POST"])
 def register():
-    msg, status = registration.register(request, postgresConnection)
-    if status == 201:
-        print("successfully registered user")
-        return msg, status
-    else:
-        print(msg)
-        return msg, status
+    msg, statusCode = registration.register(request, postgresConnection)
+    print(msg, statusCode)
+
+    return jsonify(msg, statusCode)
 
 @server.route("/login", methods=["POST"])
 def login():
-    token, err = access.login(request, postgresConnection)
-    print(token)
-    if not err:
-        return token
-    else:
-        return err
+    msg, statusCode = access.login(request, postgresConnection)
+    print(msg, statusCode)
+
+    return jsonify(msg, statusCode)
 
 
 @server.route('/logout', methods=["DELETE"])
@@ -59,7 +56,7 @@ def logout():
     if request.method == "DELETE":
         session['user_id'] = None
         response = make_response('', 204)
-        return response
+        return jsonify(response)
 
 @server.route("/todos", methods=["POST"])
 def todos():
@@ -70,7 +67,7 @@ def todos():
         return msg
 
     # TODO: finish the request
-    item = todos.createItem(request, mongoCollection)
+    msg, statusCode = todos.createItem(request, mongoCollection)
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
