@@ -60,11 +60,11 @@ def logout():
 
 @server.route("/todos", methods=["POST"])
 def todos():
-    msg, status = access.validateUser(request)
+    msg, statusCode = access.validateUser(request)
     print(msg)
 
-    if status != 200:
-        return msg
+    if statusCode != 200:
+        return jsonify(msg, statusCode)
 
     # TODO: finish the request
     msg, statusCode = todos.createItem(request, mongoCollection)

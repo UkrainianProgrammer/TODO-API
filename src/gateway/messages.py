@@ -1,4 +1,6 @@
 errorInvalidCredentials="Invalid credentials"
+errorUserNotAuthorized="User not authorized to write to database"
+errorMissingCredentials="Missing credentials"
 errorEmailExists="Email already exists in the database"
 errorProcessingRequest="Error processing request: {}"
 errorMissingDataInRequest="Missing data in request {}"

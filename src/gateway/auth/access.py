@@ -29,18 +29,18 @@ def login(request, connection):
 
 def validateUser(request):
     if not "Authorization" in request.headers:
-        return "missing credentials", 401
+        return messages.errorMissingCredentials, 401
 
     encodedToken = request.headers["Authorization"]
     if not encodedToken:
-        return "invalid credentials", 401
+        return messages.errorInvalidCredentials, 401
     
     encodedToken = encodedToken.split(" ")[1]
 
     try:
         decoded = jwt.decode(encodedToken, jwtSecret, algorithms=["HS256"])
     except:
-        return "not authorized", 403
+        return messages.errorUserNotAuthorized, 403
 
     return decoded, 200
 
