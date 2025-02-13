@@ -13,7 +13,7 @@ jwtSecret = os.environ.get("JWT_SECRET")
 def login(request, connection):
     auth = request.authorization
     if not auth:
-        return None, ("missing credentials", 401)
+        return messages.errorMissingCredentials, 401
     
     # check postgres for username and password
     with connection.cursor() as cursor:

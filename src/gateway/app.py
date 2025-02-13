@@ -8,6 +8,7 @@ from auth import access, registration
 from todo import todos
 
 load_dotenv()
+server = Flask(__name__)
 
 # POSTGRES
 postgreDbUrl = os.environ.get("POSTGRES_URL")
@@ -28,9 +29,6 @@ mongoDb = mongoClient[MONGO_DB]
 mongoCollection = mongoDb[MONGO_COLLECTION]
 mongoDb.command("ping") # Check connection by sending a ping command
 print("Successfully connected to MongoDB database: " + MONGO_DB)
-
-
-server = Flask(__name__)
 
 @server.route("/", methods=[""])
 def index():
