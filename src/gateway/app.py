@@ -30,7 +30,7 @@ mongoCollection = mongoDb[MONGO_COLLECTION]
 mongoDb.command("ping") # Check connection by sending a ping command
 print("Successfully connected to MongoDB database: " + MONGO_DB)
 
-@server.route("/", methods=[""])
+@server.route("/", methods=["POST"])
 def index():
     return render_template('index.html')
 
