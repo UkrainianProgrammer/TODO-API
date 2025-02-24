@@ -69,7 +69,9 @@ def todos():
 
 @server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
 def updateTodo(arg1=None):
-    pass
+    # update todo item with ID arg1
+    msg, statusCode = access.validateUser(request)
+    print(msg)
 
 @server.route("/todos/<int:arg1>", methods=["DELETE", "POST"])
 def removeTodo(arg1=None):
