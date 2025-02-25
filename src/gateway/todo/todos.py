@@ -22,8 +22,18 @@ def createItem(request, mongoCollection):
     except Exception as e:
         return jsonify({"ErrorInfo": messages.errorFailedToInsertTodoData}), 500
 
-def updateItem():
-    pass
+def updateItem(todoId, request, mongoCollection):
+    try:
+        data = request.get_json()
+
+        # TODO: check if this request already exists in db
+
+        if not data:
+            return jsonify({"ErrorInfo": messages.errorMissingDataInRequest.format("todos")}), 400
+    
+    except Exception as e:
+        return jsonify({"ErrorInfo": messages.errorProcessingRequest.format("failed to update data in MongoDB")}), 500
+
 
 def deleteItem():
     pass

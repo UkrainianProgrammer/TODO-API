@@ -67,11 +67,17 @@ def todos():
     # TODO: finish the request
     msg, statusCode = todos.createItem(request, mongoCollection)
 
-@server.route("/todos/<int:arg1>", methods=["PATCH", "POST"])
-def updateTodo(arg1=None):
+@server.route("/todos/<int:id>", methods=["PATCH", "POST"])
+def updateTodo(id=None):
     # update todo item with ID arg1
     msg, statusCode = access.validateUser(request)
     print(msg)
+
+    if statusCode!= 200:
+        return jsonify(msg, statusCode)
+    
+    # TODO: finish the request
+    msg, statusCode = todos.updateItem(id, request, mongoCollection)
 
 @server.route("/todos/<int:arg1>", methods=["DELETE", "POST"])
 def removeTodo(arg1=None):
