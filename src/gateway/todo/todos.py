@@ -8,6 +8,7 @@ def createItem(request, mongoCollection):
         data = request.get_json()
         
         # TODO: check if this request already exists in db
+        createInfo = mongoCollection.get_value(data)
 
         if not data:
             return jsonify({"ErrorInfo": messages.errorMissingDataInRequest.format("todos")}), 400
